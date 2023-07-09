@@ -27,7 +27,11 @@ export async function generateMetadata({
       tags,
       publishedTime: date,
       url: `https://seungwonan.com/${lang}/blog/${slug}`,
-      images: `https://seungwonan.com/og?title=${title}`,
+      images: [
+        {
+          url: `https://seungwonan.com/og?title=${title}`,
+        },
+      ],
     },
   };
 }

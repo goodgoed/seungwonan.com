@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
           width: "100%",
           display: "flex",
           alignItems: "center",
-          backgroundImage: "url(http://seungwonan.com/og-bg.png)",
+          backgroundImage: "url(https://seungwonan.com/og-bg.png)",
         }}
       >
         <div
