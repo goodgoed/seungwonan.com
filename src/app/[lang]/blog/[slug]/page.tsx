@@ -16,12 +16,13 @@ export async function generateMetadata({
   );
 
   if (!post) return;
-  const { title, date, tags } = post;
+  const { title, summary, date, tags } = post;
 
   return {
     title,
     openGraph: {
       title,
+      description: summary,
       type: "article",
       tags,
       publishedTime: date,
