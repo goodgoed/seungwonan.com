@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "HOME",
+    "blog": "BLOG",
+    "project": "PROJECT"
+  },
+  "home": {
+    "hi": "hi, i'm seungwon an (harry)",
+    "description": "I'm a sophomore computer science major student at SUNY Korea. I am currently interested in Software Architecture."
+  },
+  "project": {
+    "temp": "This page will be updated soon!"
+  }
+}
