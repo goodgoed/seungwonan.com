@@ -1,10 +1,22 @@
-import Mdx from "@/components/mdx";
-import { Locale } from "@/i18n-config";
 import { allPosts } from "contentlayer/generated";
-import { format, parseISO } from "date-fns";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+import { formatDate } from "@/lib/date";
+import Mdx from "@/components/mdx";
+import { Locale } from "@/i18n-config";
+import { getLocales } from "@/get-locale";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
+
+export async function generateStaticParams() {
+  const slugs = allPosts
+    .filter((post) => post.locale === "en")
+    .map((post) => ({ slug: post.slug }));
+
+  return slugs;
+}
 
 export async function generateMetadata({
   params: { lang, slug },
@@ -36,6 +48,15 @@ export async function generateMetadata({
   };
 }
 
+function dateFromToday(date: string, lang: Locale) {
+  const d = new Date(date);
+
+  return formatDistanceToNow(d, {
+    addSuffix: true,
+    locale: lang === "ko" ? ko : undefined,
+  });
+}
+
 function getPostBySlug(lang: Locale, slug: string) {
   const post = allPosts.find(
     (post) => post.locale === lang && post.slug === slug
@@ -46,11 +67,12 @@ function getPostBySlug(lang: Locale, slug: string) {
   return post;
 }
 
-export default function Page({
+export default async function Page({
   params: { lang, slug },
 }: {
   params: { lang: Locale; slug: string };
 }) {
+  const locales = await getLocales(lang);
   const post = getPostBySlug(lang, slug);
 
   return (
@@ -66,13 +88,13 @@ export default function Page({
         </div>
         <h1 className="text-3xl font-bold">{post.title}</h1>
         <time className=" text-sm font-light">
-          {format(parseISO(post.date), "MMM d, yyyy")}
+          {formatDate(post.date, lang)} | {dateFromToday(post.date, lang)}
         </time>
       </div>
       <Mdx code={post.body.code} />
       <div className="mt-8">
         <Link href={`/${lang}/blog`} className="text-primary">
-          &#8592; Back to blog
+          <span className="pb-4">&#8592;</span> {locales["blog"].back}
         </Link>
       </div>
     </section>

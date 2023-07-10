@@ -1,5 +1,5 @@
 import "@/globals.css";
-import Navbar from "@/components/navbar";
+import Navbar from "@/app/[lang]/navbar";
 
 import { getLocales } from "@/get-locale";
 import { Locale } from "@/i18n-config";

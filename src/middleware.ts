@@ -1,4 +1,3 @@
-//TODO: check what these packages do
 import { NextResponse, NextRequest } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
@@ -44,6 +43,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|og|opengraph-image).*)",
+    "/((?!api|_next/static|_next/image|content|favicon.ico|og|opengraph-image|sitemap).*)",
   ],
 };

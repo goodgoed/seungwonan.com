@@ -11,7 +11,6 @@ export const Post = defineDocumentType(() => ({
     date: { type: "date", required: true },
     locale: { type: "string", required: true },
     category: { type: "string", required: true, default: "Uncategorized" },
-    categorySlug: { type: "string", require: true, default: "uncategorized" },
     tags: { type: "list", of: { type: "string" }, required: true },
     summary: { type: "string", required: true },
   },
@@ -19,6 +18,10 @@ export const Post = defineDocumentType(() => ({
     slug: {
       type: "string",
       resolve: (doc) => doc._raw.flattenedPath.slice(0, -3),
+    },
+    categorySlug: {
+      type: "string",
+      resolve: (doc) => doc.category.toLowerCase(),
     },
     structuredData: {
       type: "json",

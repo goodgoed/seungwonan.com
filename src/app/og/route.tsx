@@ -6,6 +6,10 @@ export const runtime = "edge";
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get("title");
+  const font = fetch(
+    new URL("../../../public/fonts/Roboto-Black.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
+  const fontData = await font;
 
   return new ImageResponse(
     (
@@ -20,12 +24,14 @@ export async function GET(req: NextRequest) {
       >
         <div
           style={{
-            fontSize: 150,
+            fontSize: 120,
             fontStyle: "normal",
-            marginLeft: 130,
+            marginLeft: 50,
             marginRight: 190,
-            color: "#81A1C1",
+            maxWidth: "50%",
             wordWrap: "break-word",
+            fontFamily: "Roboto, sans-serif",
+            fontWeight: 900,
           }}
         >
           {postTitle}
@@ -33,6 +39,13 @@ export async function GET(req: NextRequest) {
       </div>
     ),
     {
+      fonts: [
+        {
+          name: "Roboto",
+          data: fontData,
+          style: "normal",
+        },
+      ],
       width: 1920,
       height: 1080,
     }

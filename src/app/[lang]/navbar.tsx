@@ -33,13 +33,15 @@ export default function Navbar({
   return (
     <nav className="flex items-center gap-4">
       {Object.entries(navItems).map(([path, { name }]) => {
-        // const isActive = path === pathname;
-
         return (
           <Link
             key={path}
             href={`/${lang}/${path}`}
-            className={clsx(path === "/" && "mr-auto")}
+            className={clsx(
+              "p-2",
+              path === "/" && "mr-auto",
+              "hover:bg-gray-100 hover:rounded-md transition-all"
+            )}
           >
             {locales["nav"][name]}
           </Link>

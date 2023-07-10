@@ -13,7 +13,7 @@ export default function CategoryNavbar({
   lang: Locale;
 }) {
   let pathname = usePathname().slice(3);
-  const navItems = {};
+  let navItems = {};
   categories.forEach((category) => {
     Object.defineProperty(
       navItems,
@@ -29,7 +29,7 @@ export default function CategoryNavbar({
   });
 
   return (
-    <ul className="flex flex-col border-2 border-gray-200 rounded-md p-4 mb-6">
+    <ul className="flex flex-col border-2 border-gray-200 rounded-md p-4 mb-6 mx-2">
       {Object.entries(
         navItems as { path: { name: string; count: Number } }
       ).map(([path, { name, count }]) => {
@@ -38,7 +38,11 @@ export default function CategoryNavbar({
         return (
           <li
             key={path}
-            className={clsx("flex font-semibold", isActive && "text-primary")}
+            className={clsx(
+              "flex font-semibold",
+              isActive && "text-primary",
+              "hover:text-primary transition-all"
+            )}
           >
             <Link href={`/${lang}/${path}`} className="mr-auto">
               {name}

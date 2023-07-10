@@ -5,6 +5,14 @@ import { allPosts } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  const slugs = allPosts
+    .filter((post) => post.locale === "en")
+    .map((post) => ({ slug: post.categorySlug }));
+
+  return slugs;
+}
+
 function getPostByCategory(slug: string, lang: Locale) {
   const posts = allPosts
     .filter((post) => post.locale === lang && post.categorySlug === slug)
@@ -25,12 +33,12 @@ export default function Page({
   const posts = getPostByCategory(slug, lang);
 
   return (
-    <div>
-      <ul>
+    <>
+      <ul className="flex flex-col gap-6 px-2">
         {posts.map((post) => {
           return <Post key={post._id} post={post} />;
         })}
       </ul>
-    </div>
+    </>
   );
 }

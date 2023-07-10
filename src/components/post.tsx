@@ -1,33 +1,36 @@
 import Link from "next/link";
-import format from "date-fns/format";
-import { parseISO } from "date-fns";
 import { Post } from "contentlayer/generated";
+
+import { formatDate } from "@/lib/date";
+import type { Locale } from "@/i18n-config";
 
 export default function Post({ post }: { post: Post }) {
   const { locale: lang, slug, title, date, tags } = post;
 
   return (
-    <li>
-      <Link href={`/${lang}/blog/${slug}`} className="flex items-center">
-        <div className="mr-auto">
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
-          <ul className="flex gap-2">
-            {tags &&
-              tags.map((tag) => {
-                return (
-                  <li
-                    key={tag}
-                    className="border-[1px] rounded-md text-gray-500 border-gray-500 py-1 px-2 text-sm"
-                  >
-                    {tag}
-                  </li>
-                );
-              })}
-          </ul>
+    <li className="relative p-4 hover:shadow-lg transition-all border-[1px] border-gray-200 rounded-md">
+      <Link href={`/${lang}/blog/${slug}`} className="hover: ">
+        <div className="flex flex-initial justify-between items-center mb-2">
+          <h3 className="text-lg font-bold lg:text-xl pr-4 break-keep">
+            {title}
+          </h3>
+          <time className="text-gray-500 text-sm text-end break-keep">
+            {formatDate(date, lang as Locale)}
+          </time>
         </div>
-        <time className="text-gray-500 text-sm">
-          {format(parseISO(date), "MMM d, yyyy")}
-        </time>
+        <ul className="flex gap-2">
+          {tags &&
+            tags.map((tag) => {
+              return (
+                <li
+                  key={tag}
+                  className="border-[1px] rounded-md text-gray-500 border-gray-200 py-1 px-2 text-xs"
+                >
+                  {tag}
+                </li>
+              );
+            })}
+        </ul>
       </Link>
     </li>
   );

@@ -1,6 +1,6 @@
 import { allPosts } from "contentlayer/generated";
 
-import CategoryNavbar from "@/components/category-navbar";
+import CategoryNavbar from "@/app/[lang]/blog/category/navbar";
 import { Locale } from "@/i18n-config";
 
 function getAllCategories(lang: Locale) {
@@ -14,15 +14,29 @@ function getAllCategories(lang: Locale) {
         categories[post.category].count += 1;
       } else {
         categories[post.category] = {
-          count: 1,
-          slug: post.categorySlug,
           name: post.category,
+          slug: post.categorySlug,
+          count: 1,
         };
       }
     }
   });
 
-  return Object.values(categories);
+  return Object.values(categories).sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+
+    if (nameA === "ALL") return 1;
+    if (nameB === "ALL") return 1;
+
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  });
 }
 
 export default function Layout({

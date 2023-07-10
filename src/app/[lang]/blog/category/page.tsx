@@ -2,9 +2,10 @@ import { Post, allPosts } from "contentlayer/generated";
 
 import type { Locale } from "@/i18n-config";
 import PostCard from "@/components/post";
+import { compareDesc } from "date-fns";
 
 function getAllPostsByCategory(lang: Locale) {
-  const posts: { [key: string]: any } = {};
+  let posts: { [key: string]: any } = {};
 
   allPosts.forEach((post) => {
     if (post.locale === lang) {
@@ -15,6 +16,15 @@ function getAllPostsByCategory(lang: Locale) {
       }
     }
   });
+
+  posts = Object.keys(posts)
+    .sort()
+    .reduce((obj, key) => {
+      obj[key as keyof Object] = posts[key].sort((a: Post, b: Post) =>
+        compareDesc(new Date(a.date), new Date(b.date))
+      );
+      return obj;
+    }, {});
 
   return posts;
 }
@@ -27,21 +37,19 @@ export default function Page({
   const postsByCategory = getAllPostsByCategory(lang);
 
   return (
-    <div>
+    <>
       {Object.entries(postsByCategory).map(([category, posts]) => {
         return (
-          <>
-            <h3 className="text-3xl font-bold mb-4 pb-1 border-b-2 border-gray-200">
-              {category}
-            </h3>
-            <ul>
+          <div className="mb-6 px-2" key={category}>
+            <h3 className="text-3xl font-bold mb-2">{category}</h3>
+            <ul className="flex flex-col gap-6">
               {posts.map((post: Post) => {
                 return <PostCard key={post._id} post={post} />;
               })}
             </ul>
-          </>
+          </div>
         );
       })}
-    </div>
+    </>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePopper } from "react-popper";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 import globe from "public/globe.svg";
 import { i18n, localeFullName } from "@/i18n-config";
@@ -20,42 +21,68 @@ export default function Toggler() {
   const path = usePathname().slice(4);
   const currentLocale = usePathname().slice(1, 3);
 
+  const variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
   const toggleTooltip = () => {
     setShow((prev) => !prev);
   };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (show && !referenceElement.contains(e.target)) {
+        setShow(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [referenceElement, show]);
 
   return (
     <>
       <button
         type="button"
-        className="relative px-2.5 py-2.5"
+        className={clsx(
+          "p-2",
+          "hover:bg-gray-200 hover:rounded-md transition-all"
+        )}
         ref={setReferenceElement}
         onClick={toggleTooltip}
       >
-        <Image src={globe} alt="language" fill />
+        <span className="relative p-2.5">
+          <Image src={globe} alt="language" fill />
+        </span>
       </button>
-      <ul
-        ref={setPopperElement}
-        style={styles.popper}
-        {...attributes.popper}
-        className={` border-2 border-gray-100 bg-white px-2 pt-2 rounded-md ${
-          show ? "" : "hidden"
-        }`}
-      >
-        {i18n.locales.map((locale) => {
-          return (
-            <li
-              key={locale}
-              className={clsx(
-                "pb-2",
-                currentLocale === locale && "text-primary"
-              )}
-            >
-              <Link href={`/${locale}/${path}`}>{localeFullName[locale]}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      {show && (
+        <motion.ul
+          initial="hidden"
+          animate="visible"
+          ref={setPopperElement}
+          style={styles.popper}
+          variants={variants}
+          {...attributes.popper}
+          className={`border-2 border-gray-100 bg-white px-2 pt-2 rounded-md`}
+        >
+          {i18n.locales.map((locale) => {
+            return (
+              <li
+                key={locale}
+                className={clsx(
+                  "pb-2",
+                  currentLocale === locale && "text-primary"
+                )}
+              >
+                <Link href={`/${locale}/${path}`}>
+                  {localeFullName[locale]}
+                </Link>
+              </li>
+            );
+          })}
+        </motion.ul>
+      )}
     </>
   );
 }

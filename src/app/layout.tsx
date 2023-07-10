@@ -3,9 +3,15 @@ import "@/globals.css";
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 
-//TODO: Make sure what those mean
 export const metadata: Metadata = {
   metadataBase: new URL("https://seungwonan.com"),
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/en",
+      "ko-KR": "ko",
+    },
+  },
   title: {
     default: "Seungwon An (Harry)",
     template: "%s | Seungwon An (Harry)",
