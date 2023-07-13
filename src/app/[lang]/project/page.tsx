@@ -1,4 +1,4 @@
-import { getLocales } from "@/get-locale";
+import { getLocales } from "@/lib/get-locale";
 import { Locale } from "@/i18n-config";
 import { Metadata } from "next";
 

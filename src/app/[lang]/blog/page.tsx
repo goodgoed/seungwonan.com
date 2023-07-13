@@ -3,6 +3,7 @@ import { allPosts, Post } from "contentlayer/generated";
 import { Locale } from "@/i18n-config";
 import PostCard from "@/components/post";
 import { compareDesc } from "date-fns";
+import { getPostViews } from "@/lib/stat";
 
 function getAllPosts(lang: String) {
   const posts = allPosts
@@ -12,17 +13,18 @@ function getAllPosts(lang: String) {
   return posts;
 }
 
-export default function Page({
+export default async function Page({
   params: { lang },
 }: {
   params: { lang: Locale };
 }) {
   const posts: Post[] = getAllPosts(lang);
+  const allViews = await getPostViews();
 
   return (
     <ul className="flex flex-col gap-6 px-2">
       {posts.map((post) => {
-        return <PostCard key={post._id} post={post} />;
+        return <PostCard key={post._id} post={post} allViews={allViews} />;
       })}
     </ul>
   );

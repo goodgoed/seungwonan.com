@@ -4,7 +4,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "I write stuff.",
+  description:
+    "Read blog posts about both on dev-related and my personal stories.",
 };
 
 export default function Layout({

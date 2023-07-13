@@ -6,17 +6,19 @@ import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/date";
 import Mdx from "@/components/mdx";
 import { Locale } from "@/i18n-config";
-import { getLocales } from "@/get-locale";
+import { getLocales } from "@/lib/get-locale";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import { getPostViews } from "@/lib/stat";
+import View from "@/components/view";
 
-export async function generateStaticParams() {
-  const slugs = allPosts
-    .filter((post) => post.locale === "en")
-    .map((post) => ({ slug: post.slug }));
+// export async function generateStaticParams() {
+//   const slugs = allPosts
+//     .filter((post) => post.locale === "en")
+//     .map((post) => ({ slug: post.slug }));
 
-  return slugs;
-}
+//   return slugs;
+// }
 
 export async function generateMetadata({
   params: { lang, slug },
@@ -72,8 +74,11 @@ export default async function Page({
 }: {
   params: { lang: Locale; slug: string };
 }) {
-  const locales = await getLocales(lang);
   const post = getPostBySlug(lang, slug);
+  const [allViews, locales] = await Promise.all([
+    getPostViews(),
+    getLocales(lang),
+  ]);
 
   return (
     <section className="my-16">
@@ -86,10 +91,14 @@ export default async function Page({
             {post.category}
           </span>
         </div>
-        <h1 className="text-3xl font-bold">{post.title}</h1>
-        <time className=" text-sm font-light">
-          {formatDate(post.date, lang)} | {dateFromToday(post.date, lang)}
-        </time>
+        <h1 className="text-3xl font-bold text-center">{post.title}</h1>
+        <div className="flex text-sm font-light">
+          <time>
+            {formatDate(post.date, lang)} | {dateFromToday(post.date, lang)}
+          </time>
+          <span>&nbsp;|&nbsp;</span>
+          <View lang={lang} slug={slug} track allViews={allViews} />
+        </div>
       </div>
       <Mdx code={post.body.code} />
       <div className="mt-8">

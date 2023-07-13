@@ -1,17 +1,18 @@
 import Post from "@/components/post";
 import { Locale } from "@/i18n-config";
+import { getPostViews } from "@/lib/stat";
 
 import { allPosts } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 import { notFound } from "next/navigation";
 
-export async function generateStaticParams() {
-  const slugs = allPosts
-    .filter((post) => post.locale === "en")
-    .map((post) => ({ slug: post.categorySlug }));
+// export async function generateStaticParams() {
+//   const slugs = allPosts
+//     .filter((post) => post.locale === "en")
+//     .map((post) => ({ slug: post.categorySlug }));
 
-  return slugs;
-}
+//   return slugs;
+// }
 
 function getPostByCategory(slug: string, lang: Locale) {
   const posts = allPosts
@@ -25,18 +26,19 @@ function getPostByCategory(slug: string, lang: Locale) {
   return posts;
 }
 
-export default function Page({
+export default async function Page({
   params: { slug, lang },
 }: {
   params: { slug: string; lang: Locale };
 }) {
   const posts = getPostByCategory(slug, lang);
+  const allViews = await getPostViews();
 
   return (
     <>
       <ul className="flex flex-col gap-6 px-2">
         {posts.map((post) => {
-          return <Post key={post._id} post={post} />;
+          return <Post key={post._id} post={post} allViews={allViews} />;
         })}
       </ul>
     </>

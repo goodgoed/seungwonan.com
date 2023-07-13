@@ -3,6 +3,7 @@ import { Post, allPosts } from "contentlayer/generated";
 import type { Locale } from "@/i18n-config";
 import PostCard from "@/components/post";
 import { compareDesc } from "date-fns";
+import { getPostViews } from "@/lib/stat";
 
 function getAllPostsByCategory(lang: Locale) {
   let posts: { [key: string]: any } = {};
@@ -29,12 +30,13 @@ function getAllPostsByCategory(lang: Locale) {
   return posts;
 }
 
-export default function Page({
+export default async function Page({
   params: { lang },
 }: {
   params: { lang: Locale };
 }) {
   const postsByCategory = getAllPostsByCategory(lang);
+  const allViews = await getPostViews();
 
   return (
     <>
@@ -44,7 +46,9 @@ export default function Page({
             <h3 className="text-3xl font-bold mb-2">{category}</h3>
             <ul className="flex flex-col gap-6">
               {posts.map((post: Post) => {
-                return <PostCard key={post._id} post={post} />;
+                return (
+                  <PostCard key={post._id} post={post} allViews={allViews} />
+                );
               })}
             </ul>
           </div>

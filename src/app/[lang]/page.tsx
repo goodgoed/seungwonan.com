@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { getLocales } from "@/get-locale";
+import { getLocales } from "@/lib/get-locale";
 import { Locale } from "@/i18n-config";
 import profile from "/public/profile.png";
 import github from "/public/github.svg";
