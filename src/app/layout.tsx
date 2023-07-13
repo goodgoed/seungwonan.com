@@ -54,7 +54,7 @@ export default function RootLayout({
       <body
         className={`antialiased w-4/5 mb-40 flex flex-col mx-auto mt-8 lg:w-1/2 ${raleway.className}`}
       >
-        <main className="relative flex-auto min-w-0 flex flex-col md:px-0">
+        <main className="relative flex-auto min-w-0 flex flex-col md:px-0 py-8">
           {children}
         </main>
       </body>
