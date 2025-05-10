@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 
 export default function Error({
@@ -14,15 +15,20 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-auto flex-col justify-center items-center gap-8">
-      <h1 className="text-4xl font-bold">Error!</h1>
-      <button
-        type="button"
-        onClick={reset}
-        className="py-2 px-4 border-[1px] border-gray-400 rounded-md"
-      >
+    <Stack
+      sx={{
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 4,
+      }}
+    >
+      <Typography variant="h2" component="h1">
+        Something went wrong!
+      </Typography>
+      <Button variant="outlined" onClick={() => reset()}>
         TRY AGAIN
-      </button>
-    </div>
+      </Button>
+    </Stack>
   );
 }

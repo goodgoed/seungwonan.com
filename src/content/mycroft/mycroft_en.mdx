@@ -1,0 +1,48 @@
+---
+title: Software Engineering Internship
+slug: mycroft
+date: 2022-12-04
+tags: ['Internship']
+summary: Valuable experience learned from Software Engineering
+locale: en
+---
+
+import DeskImg from './mycroft.png'
+
+This summer vacation passed by faster than I expected. After finishing my last exam, I immediately went to Jeju Island and spent an additional week there. Although I'm not very young, the thought of starting university late was dominant in my mind. So, I always had the thought that I should do something more. That's why I impulsively applied for a meeting with the Career Development Center. I didn't know what to ask, I just wanted some hints on how to spend my vacation. Until the meeting was scheduled, I had written down a few personal goals on how to spend my vacation, such as exercising, reading, and studying development, which may seem a bit cliché or obvious. Then the day of the meeting arrived. While talking with the coach, towards the end, they mentioned that there was a good opportunity this summer and asked if I wanted to apply. Even though I had no plans, I immediately said I would do it. But contrary to my words, I had a lot of doubts before finally deciding to go for it. One might question why a first-year college student would have such concerns. Given the nature of college, it seemed like all interns would be assigned tasks that required foreign language skills, and I thought it would be better to use that time to study. However, in the end, I applied and luckily started my first internship.
+
+## The Beginning of the Job
+
+Contrary to my worries, my main task was in the frontend part. After confirming my internship, I received a message saying it would be good if I learned React and Thymeleaf. Since there was less than two weeks, I decided to focus on learning React, as I judged that I could quickly learn Thymeleaf since it is a template engine. I watched free tutorials on YouTube and by the time I could create a simple quiz app, I started my first day at work.
+
+## First Task
+
+I mainly handled translation tasks. Specifically, it involved transferring translated Excel files to JSON files and applying them to the website. I used the i18n library for translation. Since it was my first time using this library, I read the documentation to learn about the setup and application methods. I thought it wouldn't be too difficult, so I expected to finish it quickly.
+
+## First Obstacle
+
+I received a project to start the translation work. I set up the configuration as stated in the documentation and tried to apply it to see if it worked. However, I didn't even know how to run it. Looking back, it's hard to believe that I didn't know how to do that, but the project was divided into smaller parts, which confused me. Fortunately, the people in my team answered my questions very well, so I was able to solve it quickly. After overcoming some difficulties, I managed to run it, but the translation was not complete, of course. Here came the second problem. I couldn't figure out which part of the code corresponded to which part of the text. Since I wasn't familiar with React, I couldn't follow the code at first. Since it was just finding and replacing strings, it was not easy to translate the strings that were not visible or that I couldn't find. This also led me to ask how to follow the code. I used the VSCode editor and learned various shortcuts while using it. Sometimes, I was amazed at how quickly they could do it and asked or looked it up myself. Another issue was when dealing with cases where components like modals were conditionally rendered, and I couldn't modify the entire logic. In such cases, I had to mock data and test it. However, I wasn't familiar with TypeScript syntax, so it was quite difficult to learn the syntax and perform the tests.
+
+## Lessons Learned
+
+Since the project was large, there was a significant amount of translation work. Initially, it felt a bit repetitive, and I wanted to write code myself. However, even in this repetitive translation work, I learned a lot. First of all, I was able to learn the basics. I learned what npm is, what a registry is, and how to use a private registry. Before starting the translation work, I could understand why webpack and Babel were necessary when fixing errors that occurred during the build process. For example, there was a case where I needed to use a calendar library, but it didn't support the language I needed. Since the project already used that library for all calendars, it was difficult to switch to a different one. So, I decided to fork the library from the npm registry and switch to using moment.js. First, I understood the code and where the language translation was happening. Fortunately, I could understand it quickly, and now all I had to do was make the modifications. However, I thought that the order and method of receiving arguments were fixed. I couldn't find a way to modify it. But at the end of my question, I learned about closure functions, which made the implementation quite easy. It felt refreshing to solve something I had been struggling with for three hours in just 10 minutes, but I also realized how long the road ahead still was. Additionally, I experienced various libraries. Besides translation tasks, I developed a Chrome extension to improve internal work efficiency. I used a relatively new framework called Plasmo, and in addition, I studied several other libraries such as NestJS, GraphQL, React Query, Recharts, and Date-fns to implement the features. Before implementing the features, I tried to determine which library would be the best fit and made an effort to understand them as quickly as possible. Previously, I used to search for tutorials on YouTube before reading the documentation, but now I found it easier to read the documentation and search for API references. We also had a weekly meeting where we talked about topics or articles that we found interesting. Listening to those discussions every week made me realize that development trends change rapidly, and it's necessary to adapt quickly. I also downloaded a command-line tool called Prettier LS because it looked pretty, but I don't use it much... Still, I use it occasionally when I want to boost my mood...
+
+## Collaboration
+
+Since this was my first time studying algorithms and working on my own, I had never experienced collaboration before. I knew about Git before and that it was widely used, but I had never actually used it. Initially, it was really difficult. There were times when I struggled because I forgot to create a new branch before starting the work. I also had to think a lot about how to write commit messages, create new issues, or pull requests. However, now I have learned the basic methods and can use them.
+
+## Regrets
+
+Firstly, I felt that the time was too short since it was only done during the vacation. I wonder how it would have been if it had been longer. Another regret was that I made frequent mistakes due to the limits of my abilities.
+
+## Reflections
+
+I realized that I still have a long way to go. If I have another internship or get a job, I want to be someone who can confidently handle tasks within the given time frame without feeling anxious. However, instead of being discouraged, it became a motivating factor. This experience made me realize that development suits my aptitude, and it encouraged me to study harder. Although I enjoyed frontend work, I still have a desire to pursue full-stack development. While attending university, I plan to work on side projects and study diligently.
+
+<Image
+  src={DeskImg}
+  alt="working space"
+  width={300}
+  height={500}
+  caption="memorable place"
+/>

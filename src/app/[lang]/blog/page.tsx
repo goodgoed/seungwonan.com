@@ -1,29 +1,27 @@
-import { allPosts, Post } from 'contentlayer/generated'
+import { Locale } from "@/locales/dictionaries";
+import Post from "./Post";
+import { getAllPosts } from "@/lib/post";
+import { List, ListItem } from "@mui/material";
 
-import { Locale } from '@/i18n-config'
-import PostCard from '@/components/post'
-import { compareDesc } from 'date-fns'
-
-function getAllPosts(lang: String) {
-  const posts = allPosts
-    .filter((post) => post.locale === lang)
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
-
-  return posts
-}
+export const dynamicParams = false;
 
 export default async function Page({
-  params: { lang }
+  params,
 }: {
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>;
 }) {
-  const posts: Post[] = getAllPosts(lang)
+  const { lang } = await params;
+  const posts = (await getAllPosts()).filter((post) => post.locale === lang);
 
   return (
-    <ul className="flex flex-col gap-6 px-2">
+    <List>
       {posts.map((post) => {
-        return <PostCard key={post._id} post={post} />
+        return (
+          <ListItem key={post.title} disablePadding sx={{ mb: 3 }}>
+            <Post post={post} />
+          </ListItem>
+        );
       })}
-    </ul>
-  )
+    </List>
+  );
 }

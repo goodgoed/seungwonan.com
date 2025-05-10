@@ -1,15 +1,18 @@
+import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-auto flex-col justify-center items-center gap-8">
-      <h1 className="text-4xl font-bold">Error 404</h1>
-      <button
-        type="button"
-        className="py-2 px-4 border-[1px] border-gray-400 rounded-md"
-      >
+    <Stack
+      spacing={2}
+      sx={{ height: "100%", justifyContent: "center", alignItems: "center" }}
+    >
+      <Typography variant="h2" component="h1">
+        Error 404
+      </Typography>
+      <Button variant="outlined">
         <Link href="/">GO BACK</Link>
-      </button>
-    </div>
+      </Button>
+    </Stack>
   );
 }

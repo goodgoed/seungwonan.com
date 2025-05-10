@@ -1,34 +1,36 @@
-import { getLocales } from '@/lib/get-locale'
-import { Locale } from '@/i18n-config'
-import { Metadata } from 'next'
+import { Metadata } from "next";
+
+import { getDictionary, Locale } from "@/locales/dictionaries";
 
 export async function generateMetadata({
-  params: { lang }
+  params,
 }: {
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
-  const locales = await getLocales(lang)
+  const { lang } = await params;
+  const locales = await getDictionary(lang);
   return {
     title: locales["project"]["title"],
-    description: locales['project']["description"],
+    description: locales["project"]["description"],
     openGraph: {
-      description: locales['project']["description"]
-    }
-  }
+      description: locales["project"]["description"],
+    },
+  };
 }
 
 export default async function Project({
-  params: { lang }
+  params,
 }: {
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>;
 }) {
-  const locales = await getLocales(lang)
+  const { lang } = await params;
+  const locales = await getDictionary(lang);
 
   return (
     <section className="flex flex-auto justify-center items-center">
       <h1 className="text-center text-2xl font-bold">
-        {locales['project']["title"]}
+        {locales["project"]["title"]}
       </h1>
     </section>
-  )
+  );
 }

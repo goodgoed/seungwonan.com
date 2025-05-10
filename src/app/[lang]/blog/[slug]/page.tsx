@@ -1,106 +1,87 @@
-import { allPosts } from 'contentlayer/generated'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { Metadata } from "next";
+import { getAllPosts } from "@/lib/post";
+import { Locale } from "@/locales/dictionaries";
+import MDXLoader from "./MDXLoader";
+import { Box, Stack, Typography } from "@mui/material";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
 
-import { formatDate } from '@/lib/date'
-import Mdx from '@/components/mdx'
-import { Locale } from '@/i18n-config'
-import { getLocales } from '@/lib/get-locale'
-import { formatDistanceToNow } from 'date-fns'
-import { ko } from 'date-fns/locale'
+dayjs.extend(relativeTime);
 
-export async function generateStaticParams() {
-  const slugs = allPosts
-    .filter((post) => post.locale === 'en')
-    .map((post) => ({ slug: post.slug }))
+export const dynamicParams = false;
 
-  return slugs
+export async function generateStaticParams({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  return (await getAllPosts())
+    .filter((post) => post.locale === lang)
+    .map((post) => ({
+      slug: post.slug,
+    }));
 }
 
 export async function generateMetadata({
-  params: { lang, slug }
+  params,
 }: {
-  params: { lang: Locale; slug: string }
+  params: Promise<{ lang: Locale; slug: string }>;
 }): Promise<Metadata | undefined> {
-  const post = allPosts.find(
-    (post) => post.locale === lang && post.slug === slug
-  )
-
-  if (!post) return
-  const { title, summary, date, tags } = post
+  const { lang, slug } = await params;
+  const { title, summary, date, tags } = (await getAllPosts()).find(
+    (post) => post.locale === lang && post.slug === slug,
+  )!;
 
   return {
     title,
     openGraph: {
       title,
       description: summary,
-      type: 'article',
+      type: "article",
       tags,
       publishedTime: date,
       url: `https://seungwonan.com/${lang}/blog/${slug}`,
       images: [
         {
-          url: `https://seungwonan.com/og?title=${title}`
-        }
-      ]
-    }
-  }
-}
-
-function dateFromToday(date: string, lang: Locale) {
-  const d = new Date(date)
-
-  return formatDistanceToNow(d, {
-    addSuffix: true,
-    locale: lang === 'ko' ? ko : undefined
-  })
-}
-
-function getPostBySlug(lang: Locale, slug: string) {
-  const post = allPosts.find(
-    (post) => post.locale === lang && post.slug === slug
-  )
-
-  if (!post) notFound()
-
-  return post
+          url: `https://seungwonan.com/og?title=${title}`,
+        },
+      ],
+    },
+  };
 }
 
 export default async function Page({
-  params: { lang, slug }
+  params,
 }: {
-  params: { lang: Locale; slug: string }
+  params: Promise<{ lang: Locale; slug: string }>;
 }) {
-  const post = getPostBySlug(lang, slug)
-  const locales = await getLocales(lang)
+  const { lang, slug } = await params;
+  const { title, date } = (await getAllPosts()).find(
+    (post) => post.locale === lang && post.slug === slug,
+  )!;
 
   return (
-    <section className="my-16">
-      <script type="application/ld+json" suppressHydrationWarning>
-        {JSON.stringify(post.structuredData)}
-      </script>
-      <div className="mb-8 flex flex-col gap-2 justify-center items-center">
-        <div className="mb-2">
-          <span className="py-1 px-2 border-2 border-black font-semibold">
-            {post.category}
-          </span>
-        </div>
-        <h1 className="text-3xl font-bold text-center break-keep">
-          {post.title}
-        </h1>
-        <div className="flex text-sm font-light">
-          <time>
-            {formatDate(post.date, lang)} | {dateFromToday(post.date, lang)}
-          </time>
-        </div>
-      </div>
-      <Mdx code={post.body.code} />
-      <div className="mt-8">
-        <Link href={`/${lang}/blog`} className="text-primary">
-          <span className="pb-4">&#8592;</span> {locales['blog'].back}
-        </Link>
-      </div>
-    </section>
-  )
+    <Box component="article">
+      <Stack
+        component="section"
+        sx={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 1,
+          mb: 6,
+        }}
+      >
+        <Typography variant="h1" component="h1">
+          {title}
+        </Typography>
+        <Box component="time" sx={{ fontSize: "14px", color: "grey.600" }}>
+          {dayjs(date).format("YYYY-MM-DD")} | {dayjs(date).fromNow()}
+        </Box>
+      </Stack>
+      <Box>
+        <MDXLoader slug={slug} lang={lang} />
+      </Box>
+    </Box>
+  );
 }
