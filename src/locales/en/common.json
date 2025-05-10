@@ -1,0 +1,23 @@
+{
+  "general": {
+    "name": "Seungwon An (Harry)"
+  },
+  "nav": {
+    "home": "HOME",
+    "blog": "BLOG",
+    "project": "PROJECT"
+  },
+  "home": {
+    "hi": "hi, i'm seungwon an (harry)",
+    "description": "I am currently interested in Computer Architecture and Cloud Computing."
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "This is where I share my thoughts and experiences",
+    "back": "Back to blog"
+  },
+  "project": {
+    "title": "This page will be updated soon!",
+    "description": "This is where I fully enjoy what I love to do."
+  }
+}

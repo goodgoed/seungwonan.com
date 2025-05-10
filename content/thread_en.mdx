@@ -1,0 +1,90 @@
+---
+title: What is a Thread?
+date: 2023-07-29
+category: 'OS'
+tags: ['thread']
+summary: What is a Thread?
+locale: en
+---
+
+While I am taking the online course, I realize it would be more helpful to write a blog post for better understanding on the concept.
+
+## Difference between process and thread
+
+Process - an active instance of a program that is launched in the memory ( Read more about in [What is a Process?](https://seungwonan.com/en/blog/process) )
+
+Thread - a part of process
+
+{/* TODO: add picture */}
+
+## Why is thread beneficial
+
+Each CPU (core) can only run a single process. However, with threads, CPU can run multiple tasks of a process. Even though CPU does process context switching, thread context switching is a much cheaper computation.
+
+{/* TODO: add description to context switching */}
+
+## How multi-threading works
+
+For a multi-threading to work properly, a concept of mutex is used. Mutex is like a lock that can be acquired by single thread and controls the access to a critical section. Critical section is a shared resources between threads.
+
+Often times, condition variable is used with mutex. It is used to signal other threads that the access to critical section is allowed. Also, it allows to overcome the drawback of mutex which it only allows a single thread to process.
+
+{/* TODO: provide a simple code snippet */}
+
+## Common Problems when adopting multi-threading
+
+There are three common problems: spurious wake ups, deadlocks, and race condition
+
+### Spurious Wake Ups
+
+It happens when waking up threads before unlocking mutex. It can be solved by waking up threads after unlocking mutex. However, this may not work at all scenarios because there are times when threads should be signaled after certain condition. The condition variable should not be used after unlocking mutex because it might affect the correctness of the code.
+
+### Deadlocks
+
+It happens when thread requires mutex that depends on another locked mutex by another thread. This cause cycle to happen. It can be solved by fine-grained locking and maintaing lock order.
+
+Fine-grained locking sets a condition for mutex to be acquired. However, it may not work in a scenario where two mutexes are required.
+
+Maintaining lock order sets a order to lock a mutex. It will work fine in most of the scenarios but requires some effort to follow the order.
+
+{/* TODO: add picture */}
+
+### Race Condition
+
+It happens when a thread reads a value while another thread modifies it.
+
+{/* TODO: provide a simple code snippet */}
+
+## Difference between kernel and user-level threads
+
+User-level threads mean threads created and managed by user-level thread libraries. They still need to be mapped to kernel-level thread to work. There are many models on deciding how mapping should work.
+
+### One-to-One Model
+
+OS knows everything about what the process does. However, it may have some problems with portability because OS might not support what the app assumes.
+
+<SideNote>pthread library in linux OS adopts this model.</SideNote>
+
+### Many-to-One Model
+
+It is totally portable as only one kernel-level thread is responsible for running a process. As a thread library does all the scheduling works, there is less user-kernel transition. However, as OS does not know anything about the process, if the kernel-level thread is blocked for some reason, then the entire process is blocked.
+
+### Many-to-Many Model
+
+There are bound and unbound threads in this model. Bound threads are the ones that are mapped to a specific kernel-level thread. Unbound threads can be mapped to the same kernel-level thread. This model allows a program to have portability. However, it requires a coordination between user and kernel-level because there should be a scheduling algorithm from user-level threads to kernel-level threads.
+
+{/* TODO: add picture for all models */}
+
+## Common Patterns
+
+There are two common patterns: boss/workers and pipeline.
+
+### Boss/Workers
+
+Boss aligns work to workers by either signaling an idle worker or placing work in a queue. So, boss' throughput is important for a performance.
+
+Signaling an idle worker will reduce the work of synchronization between workers. However, throughput will decrease because boss needs to find an idle worker. Also, workers lose locality because they might do new works.
+
+### Pipeline
+
+In this pattern, every thread is assigned to a subtask. It increases locality because a thread is only responsible for a single task. However, balancing and synchronization might be the problem. If one subtask takes a longer time, then the thread that is responsible for the task might be overwhelmed.

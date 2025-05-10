@@ -1,0 +1,48 @@
+---
+title: What is a Process?
+date: 2023-07-28
+category: 'OS'
+tags: ['process']
+summary: What is a Process?
+locale: en
+---
+
+While I am taking the online course, I realize it would be more helpful to write a blog post for better understanding on the concept.
+
+## What is a process?
+
+Process is an active instance of a program that is launched in the memory.
+
+## What information does a process contain? What does it look like?
+
+A process holds its code (.text), variables (.data), dynamically created objects (.heap), and variables & function calls (stack). Variables stored in stack and .data are different.
+
+<Image
+  src="/content/process.png"
+  alt="description of a process"
+  width={300}
+  height={300}
+/>
+
+## What is the address space of a process?
+
+Even though a process is located in memory, it uses virtual address space. Using a virtual address helps OS to manage physical memory space, access authorization to memory, and more.
+
+<SideNote>
+  '&' in C language shows a virtual address. Even when two virtual addresses are
+  contiguous, their physical addresses do not have to be.
+</SideNote>
+
+## Context Switch
+
+When creating a new process, OS also creates PCB (process control block). It contains information about program counter, CPU register values, and so on.
+
+While single CPU can only run a single process, it constantly switches between processes in order to give a better experience. When a process is idle, OS will schedule a CPU to run another process. It is called context switch.
+
+However, it is an expensive computation because it requires to _load and change all information from memory_ and causes _cold cache_.
+
+## Process Creation
+
+In most cases, processes are managed by tree-like structure in OS to keep track of all of them. There is a root process that creates child processes.
+
+When creating a new process, parent process can either _fork_ or _exec_. _Fork_ will copy the parent PCB to a new process. _Exec_ will create a new process with new PCB.

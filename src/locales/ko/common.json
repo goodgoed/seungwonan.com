@@ -1,0 +1,23 @@
+{
+  "general": {
+    "name": "안승원"
+  },
+  "nav": {
+    "home": "홈",
+    "blog": "블로그",
+    "project": "프로젝트"
+  },
+  "home": {
+    "hi": "안녕하세요, 제 이름은 안승원입니다",
+    "description": "현재 Computer Architecture와 Cloud Computing에 관심이 있습니다."
+  },
+  "blog": {
+    "title": "블로그",
+    "description": "저의 개인적인 경험과 개발 경험에 관련된 블로그 포스팅을 읽어보세요!",
+    "back": "블로그로 돌아가기"
+  },
+  "project": {
+    "title": "이 페이지는 금방 업데이트가 될 것입니다!",
+    "description": "제가 즐겨 개발한 프로젝트를 구경해보세요!"
+  }
+}
